@@ -1,0 +1,17 @@
+{% extends 'home/base.html' %}
+
+{% block content %}
+    {% for post in posts %}
+        <article class="media content-section">
+            <div class="media-body">
+                <div class="article-metadata">
+                    <a class="mr-2" href="{% url 'blog-user' post.author.slug %}">{{ post.author.user.username }}</a>
+                    <small class="text-muted">{{ post.date_posted }}, {{ post.views }} views </small>
+                </div>
+                <h2><a class="article-title" href="{% url 'blog-post' post.slug %}">{{ post.title }}</a></h2>
+                <p class="article-content">{{ post.content|slice:"0:100"|safe }}</p>
+            </div>
+            <p class="article-content"><a href="{% url 'blog-post' post.slug %}">(read more)</a></p>
+        </article>
+    {% endfor %}
+{% endblock content %}
