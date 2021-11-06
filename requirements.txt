@@ -2,7 +2,9 @@ asgiref==3.4.1
 beautifulsoup4==4.10.0
 cssselect==1.1.0
 Django==3.2.9
+django-ckeditor==6.1.0
 django-crispy-forms==1.13.0
+django-js-asset==1.2.2
 django-tinymce4-lite==1.8.0
 jsmin==3.0.0
 lxml==4.6.4

@@ -28,6 +28,7 @@ class RegisterView(View):
 
 @login_required
 def profile(request):
+    profile = Profile.objects.get(user_name=request.user)
     if request.method == 'POST':
         u_form = UserUpdateForm(request.POST, instance=request.user)
         p_form = ProfileUpdateForm(request.POST, request.FILES,
@@ -46,7 +47,8 @@ def profile(request):
 
     context = {
         'u_form': u_form,
-        'p_form': p_form
+        'p_form': p_form,
+        'profile': profile
     }
     user = Profile.objects.get(user_name=request.user)
     print(f'''

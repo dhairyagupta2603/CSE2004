@@ -1,6 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Blog, Comment, UserViews, BlogViews
 from users.models import Profile
+from .forms import BlogForm
 from django.views.generic import ListView
 from django.contrib.auth.decorators import login_required
 
@@ -77,10 +78,18 @@ def render_post(request, param):
     })
 
 
-# @login_required
-# class WriteBlogView(View):
-#     def get(self, request):
-#         pass
-
-#     def post(self, request):
-#         pass
+@login_required
+def write_blog(request):
+    profile = Profile.objects.get(user_name=str(request.user))
+    if request.method == "POST":
+        form = BlogForm(request.POST)
+        if form.is_valid():
+            blog = Blog(author=profile, title=form.cleaned_data.get(
+                'title'), content=form.cleaned_data.get('content'))
+            blog.save()
+            return redirect('home')
+        else:
+            form = BlogForm(request.POST)
+    else:
+        form = BlogForm()
+        return render(request=request, template_name='home/blog_form.html', context={'form': form})

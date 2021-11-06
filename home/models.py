@@ -3,14 +3,14 @@ from users.models import Profile
 from django.utils import timezone
 from django.utils.text import slugify
 from django.urls import reverse
+from ckeditor.fields import RichTextField
 
 
 class Blog(models.Model):
     title = models.CharField(max_length=100)
     author = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    content = models.TextField()
+    content = RichTextField(blank=True, null=True)
     date_posted = models.DateTimeField(default=timezone.now)
-    date_modified = models.DateTimeField(auto_now=True)
     slug = models.SlugField(db_index=True, blank=True)
     views = models.IntegerField(default=0)
 
@@ -28,7 +28,7 @@ class Blog(models.Model):
 class Comment(models.Model):
     user_to_comment = models.ForeignKey(Profile, on_delete=models.CASCADE)
     comment_to_post = models.ForeignKey(Blog, on_delete=models.CASCADE)
-    comment = models.TextField()
+    comment = RichTextField(blank=True, null=True)
     date_commented = models.DateTimeField(default=timezone.now)
     date_modified = models.DateTimeField(auto_now=True)
 
