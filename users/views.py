@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect
 from django.views import View
-from .forms import UserRegistrationForm
+from .forms import UserRegistrationForm, UserUpdateForm, ProfileUpdateForm
 from django.contrib.auth.decorators import login_required
-from home.models import Blog
 from .models import Profile
+from django.contrib import messages
 
 
 class RegisterView(View):
@@ -17,6 +17,9 @@ class RegisterView(View):
         form = UserRegistrationForm(request.POST)
         if form.is_valid():
             form.save()
+            username = form.cleaned_data.get('username')
+            messages.success(
+                request=request, message=f'Your account for {username} has been created!')
             return redirect('login')
         return render(request=request, template_name='users/register.html', context={
             'form': form
@@ -25,13 +28,30 @@ class RegisterView(View):
 
 @login_required
 def profile(request):
+    if request.method == 'POST':
+        u_form = UserUpdateForm(request.POST, instance=request.user)
+        p_form = ProfileUpdateForm(request.POST, request.FILES,
+                                   instance=request.user.profile)
+
+        if u_form.is_valid() and p_form.is_valid():
+            u_form.save()
+            p_form.save()
+
+            messages.success(
+                request=request, message=f'Your account has been updated!')
+            return redirect('profile')
+    else:
+        u_form = UserUpdateForm(instance=request.user)
+        p_form = ProfileUpdateForm(instance=request.user.profile)
+
+    context = {
+        'u_form': u_form,
+        'p_form': p_form
+    }
     user = Profile.objects.get(user_name=request.user)
     print(f'''
 
         {user}
 
         ''')
-    post = []
-    if Blog.objects.filter(author=user).exists():
-        post = Blog.objects.get(author=user)
-    return render(request=request, template_name='users/profile.html')
+    return render(request=request, template_name='users/profile.html', context=context)

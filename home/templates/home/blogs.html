@@ -4,6 +4,7 @@
 
 {% block content %}
     <article class="media content-section">
+        <img class="rounded-circle article-img" src="{{post.author.user.profile.image.url}}" >
         <div class="media-body">
             <div class="article-metadata">
                 <a class="mr-2" href="{% url 'blog-user' post.author.slug %}">{{ post.author.user.username }}</a>
@@ -16,6 +17,7 @@
     <h1>Comments</h1>
     {% for comm in Comments %}
         <article class="media content-section">
+            <img class="rounded-circle article-img" src="{{ comm.user_to_comment.user.profile.image.url }}" >
             <div class="media-body">
                 <div class="article-metadata">
                     <a class="mr-2" href="{% url 'blog-user' comm.user_to_comment.slug %}">{{ comm.user_to_comment.user.username }}</a>
