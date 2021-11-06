@@ -1,5 +1,5 @@
 from django.db import models
-from users.models import User
+from users.models import Profile
 from django.utils import timezone
 from django.utils.text import slugify
 from django.urls import reverse
@@ -7,7 +7,7 @@ from django.urls import reverse
 
 class Blog(models.Model):
     title = models.CharField(max_length=100)
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(Profile, on_delete=models.CASCADE)
     content = models.TextField()
     date_posted = models.DateTimeField(default=timezone.now)
     date_modified = models.DateTimeField(auto_now=True)
@@ -26,7 +26,7 @@ class Blog(models.Model):
 
 
 class Comment(models.Model):
-    user_to_comment = models.ForeignKey(User, on_delete=models.CASCADE)
+    user_to_comment = models.ForeignKey(Profile, on_delete=models.CASCADE)
     comment_to_post = models.ForeignKey(Blog, on_delete=models.CASCADE)
     comment = models.TextField()
     date_commented = models.DateTimeField(default=timezone.now)
@@ -38,12 +38,18 @@ class Comment(models.Model):
 
 class UserViews(models.Model):
     viewer = models.CharField(max_length=150)
-    viewee = models.ForeignKey(User, on_delete=models.CASCADE)
+    viewee = models.ForeignKey(Profile, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.viewer + ' to ' + self.viewee.user.username
 
 
 class BlogViews(models.Model):
     viewer = models.CharField(max_length=150)
     blog = models.ForeignKey(Blog, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.viewer + ' to ' + self.blog.title
 
 
 class PostScore(models.Model):

@@ -1,5 +1,7 @@
 {% extends 'home/base.html' %}
 
+{% block title %} <title>Blog-Oh-Logy {{ post.title }}</title> {% endblock %}
+
 {% block content %}
     <article class="media content-section">
         <div class="media-body">
@@ -16,7 +18,7 @@
         <article class="media content-section">
             <div class="media-body">
                 <div class="article-metadata">
-                    <a class="mr-2" href="{% url 'blog-user' comm.user_to_comment.slug %}">{{ comm.user_to_comment.user_name }}</a>
+                    <a class="mr-2" href="{% url 'blog-user' comm.user_to_comment.slug %}">{{ comm.user_to_comment.user.username }}</a>
                     <small class="text-muted">{{ comm.date_commented }}</small>
                 </div>
                 <p class="article-content">{{ comm.comment|safe }}</p>

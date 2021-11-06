@@ -1,15 +1,15 @@
 from django.contrib import admin
-from .models import User
-from home.models import Blog, Comment
+from .models import Profile
+from home.models import Blog, Comment, UserViews, BlogViews
 from tinymce.widgets import TinyMCE
 from django.db import models
 
 
-class UserAdmin(admin.ModelAdmin):
+class ProfileAdmin(admin.ModelAdmin):
     fieldsets = [
         ("Private Information", {
             "fields": (
-                ["user", "date_of_birth", "bio", "location", "image"]
+                ["user", "date_of_birth", "bio", "location", "image", "user_name"]
             ),
         })
     ]
@@ -18,7 +18,7 @@ class UserAdmin(admin.ModelAdmin):
     }
 
 
-admin.site.register(User, UserAdmin)
+admin.site.register(Profile, ProfileAdmin)
 
 
 class BlogAdmin(admin.ModelAdmin):
@@ -76,3 +76,6 @@ class CommentAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Comment, CommentAdmin)
+
+admin.site.register(BlogViews)
+admin.site.register(UserViews)

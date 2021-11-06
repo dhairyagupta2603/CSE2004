@@ -1,14 +1,15 @@
-{% extends 'home/base.html' %}
+{% extends "home/base.html" %}
+{% load crispy_forms_tags %}
 
 {% block content %}
      <div class="content-section">
       <div class="media">
         <img class="rounded-circle account-img" src="{{ user.profile.image.url }}">
         <div class="media-body">
-          <h2 class="account-heading">{{ profile.user.username }}</h2>
-          <p class="text-secondary">{{ profile.user.email }}</p>
-          <p class="text-secondary">{{ profile.bio|safe }}</p>
-          <p class="text-secondary">Profile Views: {{ profile.views }}</p>
+          <h2 class="account-heading">{{ user.user.username }}</h2>
+          <p class="text-secondary">{{ user.user.email }}</p>
+          <p class="text-secondary">{{ user.bio|safe }}</p>
+          <p class="text-secondary">Profile Views: {{ user.views }}</p>
         </div>
       </div>
       <!-- FORM HERE -->
@@ -26,3 +27,4 @@
         </article>
     {% endfor %}
 {% endblock content %}
+

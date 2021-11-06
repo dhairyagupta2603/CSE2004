@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect
 from django.views import View
 from .forms import UserRegistrationForm
 from django.contrib.auth.decorators import login_required
+from home.models import Blog
+from .models import Profile
 
 
 class RegisterView(View):
@@ -23,4 +25,13 @@ class RegisterView(View):
 
 @login_required
 def profile(request):
-    return render(request=request, template_name='users/profile.html', )
+    user = Profile.objects.get(user_name=request.user)
+    print(f'''
+
+        {user}
+
+        ''')
+    post = []
+    if Blog.objects.filter(author=user).exists():
+        post = Blog.objects.get(author=user)
+    return render(request=request, template_name='users/profile.html')

@@ -5,8 +5,9 @@ from django.utils.text import slugify
 from django.urls import reverse
 
 
-class User(models.Model):
+class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user_name = models.CharField(max_length=100, default="TBD")
     image = models.ImageField(default='default.jpg', upload_to='profile_pics')
     date_of_birth = models.DateField(default=timezone.now)
     bio = models.TextField()
@@ -15,10 +16,11 @@ class User(models.Model):
     views = models.IntegerField(default=0)
 
     def __str__(self):
-        return self.user.first_name + ' ' + self.user.last_name + '->' + self.user.username
+        return self.user.username + ' Profile'
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.user.username)
+        self.user_name = self.user.username
         return super().save(*args, **kwargs)
 
     def get_absolute_url(self):
